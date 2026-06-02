@@ -1,10 +1,10 @@
 {
-  "name": "electron-vite-react",
+  "name": "cautious-palm-tree",
   "version": "2.3.0",
   "private": true,
-  "description": "Electron Vite React boilerplate.",
+  "description": "Personal Resume Builder",
   "license": "MIT",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "author": "squishedfox",
   "type": "module",
   "main": "dist-electron/main/index.js",
   "scripts": {
