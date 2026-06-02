@@ -1,30 +1,15 @@
-# electron-vite-react
+# Cautious Palm Tree 
 
-[![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite)
-![GitHub stars](https://img.shields.io/github/stars/electron-vite/electron-vite-react?color=fa6470)
-![GitHub issues](https://img.shields.io/github/issues/electron-vite/electron-vite-react?color=d8b22d)
-![GitHub license](https://img.shields.io/github/license/electron-vite/electron-vite-react)
 [![Required Node.js >= 20.19.0 || >= 22.12.0](https://img.shields.io/static/v1?label=node&message=%3E=20.19.0%20||%20%3E=22.12.0&logo=node.js&color=3f893e)](https://nodejs.org/about/releases)
-
-English | [简体中文](README.zh-CN.md)
-
-## Overview
-
-- Ready out of the box.
-- Based on the official [template-react-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts).
-- Supports Electron and Node.js APIs in the renderer process.
-- Supports C/C++ native addons.
-- Includes debugger configuration.
-- Easy to extend to multiple windows.
 
 ## Quick Start
 
 ```sh
 # clone the project
-git clone https://github.com/electron-vite/electron-vite-react.git
+git clone git@github.com:squishedfox/cautious-palm-tree.git 
 
 # enter the project directory
-cd electron-vite-react
+cd cautious-palm-tree
 
 # install dependencies
 pnpm install
