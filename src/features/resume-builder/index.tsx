@@ -13,10 +13,20 @@ const ResumeBuilder = () => {
     // TODO: add more job history information to the form
   };
 
-  const setField = (fieldName: keyof ResumeBuilderForm, value: any) => void {
+  /**
+   * Updates the value on the form.
+   * @param currentFormValue  pass the current value just incase there is a race condition of a re-render while updating the form
+   * @param fieldName name of the field to update
+   * @param newValue the new value
+   */
+  const setField = (
+    currentFormValue: ResumeBuilderForm,
+    fieldName: keyof ResumeBuilderForm,
+    newValue: string,
+  ) => {
     setFormValue({
-      ...formValue,
-      [fieldName]: value,
+      ...currentFormValue,
+      [fieldName]: newValue,
     });
   };
 
