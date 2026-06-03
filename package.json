@@ -27,6 +27,8 @@
     "@vitejs/plugin-react": "^6.0.2",
     "electron": "^42.1.0",
     "electron-builder": "^26.8.1",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.0",
