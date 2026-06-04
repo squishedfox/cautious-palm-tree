@@ -9,7 +9,7 @@ const HistoryList = () => {
     <ul>
       <h1></h1>
       {jobHistory.items.map((item) => (
-        <li key={item.companyName}>
+        <li key={item.companyName} className="bg-gray-400">
           <div>
             <div className="flex content-between">
               <div>
