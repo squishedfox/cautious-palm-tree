@@ -1,26 +1,20 @@
 import { useState } from "react";
 import type { JobHistoryListItem } from "./types";
 import { HistoryList } from "./components";
+import { ExportIcon, SaveIcon } from "@/components/icons";
 
 export interface ResumeBuilderForm {
   about: string;
   jobHistoryItems: JobHistoryListItem[];
 }
 
-const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
-  companyName: "",
-  startDate: new Date().toLocaleDateString(),
-  endDate: "",
-  isCurrent: true,
-});
-
 const ResumeBuilder = () => {
   const [about, setAbout] = useState<string>("");
 
   return (
-    <form name="job-history">
-      <fieldset className="min-w-full">
-        <legend>About</legend>
+    <form name="job-history" className="gap-1 px-1 pt-4">
+      <fieldset className="min-w-full bg-white p-1" aria-description="About Section">
+        <h1>About</h1>
         <textarea
           className="w-full border border-gray-800"
           id="about-input"
@@ -38,8 +32,7 @@ const ResumeBuilder = () => {
         <HistoryList /> 
       </fieldset>
       <div role="group" className="flex justify-end gap-1">
-        <button role="button">Save</button>
-        <button role="button">Save and Export</button>
+        <button role="button"><SaveIcon /></button>
       </div>
     </form>
   );

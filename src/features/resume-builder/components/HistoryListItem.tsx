@@ -1,3 +1,4 @@
+import { ChevronIcon } from "@/components";
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
 
@@ -32,13 +33,13 @@ const JobHistoryItem = ({
   }
 
   return (
-    <div>
-      <div className="flex" role="group">
-        <strong>{companyName}</strong>
-        <div className="flex">
+    <div className="bg-white p-1">
+      <div role="group">
+        <p><strong>{companyName}</strong></p>
+        <p className="flex">
           {startDate} -{" "}
           {Boolean(endDate) ? endDate : "Current"}
-        </div>
+        </p>
       </div>
       <div>
         <button onClick={onAddExperienceClick}>Add Experience</button>
@@ -47,8 +48,8 @@ const JobHistoryItem = ({
         {Object.entries(experienceList).map(([id, text]) => (<li key={id}>
           <div className="flex">
             <div className="flex-1">
-              <span>Chevron up</span>
-              <span>Chevron down</span>
+              <ChevronIcon direction="up" />
+              <ChevronIcon direction="down" />
             </div>
             <div className="grow">
               <textarea id={id} name={id} maxLength={250} value={text} onChange={onTextAreaChanged} />
