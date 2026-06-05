@@ -1,4 +1,3 @@
-import React from "react";
 import { ResumeBuilder } from "./features";
 
 const App = () => (
