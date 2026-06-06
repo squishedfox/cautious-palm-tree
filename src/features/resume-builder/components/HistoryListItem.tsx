@@ -1,6 +1,6 @@
-import { ChevronIcon } from "@/components";
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
+import { ChevronIcon, EditableField } from "@app/components";
 
 export interface JobHistoryItemProps {
   companyName: string;
@@ -9,7 +9,7 @@ export interface JobHistoryItemProps {
 }
 
 const JobHistoryItem = ({
-  companyName,
+  companyName: companyNameProp,
   startDate,
   endDate,
 }: JobHistoryItemProps) => {
@@ -35,7 +35,11 @@ const JobHistoryItem = ({
   return (
     <div className="bg-white p-1">
       <div role="group">
-        <p><strong>{companyName}</strong></p>
+        <p>
+          <EditableField value={companyNameProp} type="text" onChanged={(companyName) => console.log("company name", companyName)}>
+            <strong>{companyNameProp}</strong>
+          </EditableField>
+        </p>
         <p className="flex">
           {startDate} -{" "}
           {Boolean(endDate) ? endDate : "Current"}
