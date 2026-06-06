@@ -128,7 +128,7 @@ const JobHistoryItem = ({
                 value={text}
                 onChange={onTextAreaChanged}
                 />
-              <button role="button" onClick={() => deleteExpereienceHandler(id)}>
+              <button title="delete experience" role="button" onClick={() => deleteExpereienceHandler(id)}>
                 <XmarkIcon size="sm" />
               </button>
             </div>
