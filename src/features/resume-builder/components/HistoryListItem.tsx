@@ -33,7 +33,9 @@ const JobHistoryItem = ({
 }: JobHistoryItemProps) => {
   // in this portion we use our own client ulid objects so that we can
   // have a sane way of mapping these
-  const [experienceList, setExperienceList] = useState<Record<string, string>>({});
+  const [experienceList, setExperienceList] = useState<Record<string, string>>({
+    [ulid()]: "",
+  });
 
   const onTextAreaChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setExperienceList((prev: object) => ({
