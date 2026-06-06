@@ -46,10 +46,11 @@ const JobHistoryItem = ({
 
   const onAddExperienceClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setExperienceList((prev) => ({
-      ...prev,
-      [ulid()]: "",
-    }));
+    setExperienceList((prev) => {
+      const copy = Object.assign({}, prev);
+      copy[ulid()] = "";
+      return copy;
+    });
   };
 
   const handleDateChanged = ([start, end]: [string, string]) => {
@@ -120,8 +121,9 @@ const JobHistoryItem = ({
                 <ChevronIcon size="sm" direction="down" />
               </div>
               <input
+                placeholder="Implemented data driven features using analytical tools such as amplitude, clarity, google analtyics, etc."
                 type="text"
-                className="flex-1 border-gray-800 border"
+                className="flex-1 border-gray-800 border px-1 py-0.5"
                 id={id}
                 name={id}
                 maxLength={250}

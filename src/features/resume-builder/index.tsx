@@ -13,22 +13,21 @@ const ResumeBuilder = () => {
 
   return (
     <form name="job-history" className="gap-1 px-1 pt-4 space-y-2">
-      <fieldset className="min-w-full bg-white p-1" aria-labelledby="about-section-heading">
+      <fieldset className="min-w-full bg-white px-2 py-1 border border-gray-800" aria-labelledby="about-section-heading">
         <h1 id="about-section-heading">About</h1>
         <textarea
           placeholder="1+ years of delivering data driven fatures for well tested applications using <frameworks>"
-          className="w-full border border-gray-800"
+          className="w-full border border-gray-800 px-1 py-0.5"
           id="about-input"
           name="about"
           value={about}
           onChange={(event) => setAbout(event.currentTarget.value)}
           maxLength={500}
-        ></textarea>
+          minLength={0} />
         <p className="text-gray-500">
           <em>{500 - about.length} characters left</em>
         </p>
       </fieldset>
-      <hr />
       <fieldset>
         <HistoryList /> 
       </fieldset>

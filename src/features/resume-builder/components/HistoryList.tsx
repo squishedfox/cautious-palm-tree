@@ -13,8 +13,9 @@ const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
 });
 
 const HistoryList = () => {
-  const [jobs, setJobs] = useState<Record<string, JobHistoryListItem>>({});
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [jobs, setJobs] = useState<Record<string, JobHistoryListItem>>({
+    [ulid()]: createEmptyJobHistoryItem(),
+  });
 
   const addJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -59,8 +60,9 @@ const HistoryList = () => {
 
   return (
     <div className="space-y-2">
-      <div className="flex grow justify-end">
-        <button onClick={addJobHandler}>
+      <div className="flex grow items-center">
+        <hr className="flex-1" />
+        <button onClick={addJobHandler} className="grow-0">
           <PlusIcon />
         </button>
       </div>
