@@ -4,10 +4,10 @@ import {SaveIcon, ExportIcon} from "@app/components/icons";
 const App = () => (
   <main className="flex flex-col min-h-screen">
     <div className="flex px-1 flex-1">
-      <div className="w-1/2 border-r-2 border-r-gray-800 bg-gray-200">
+      <div className="w-1/2 border-r-2 border-r-gray-800 bg-gray-200 p-4">
         <ResumeBuilder />
       </div>
-      <div className="w-1/2">
+      <div className="w-1/2 p-4">
         <h1>Preview Goes Here</h1>
       </div>
     </div>
