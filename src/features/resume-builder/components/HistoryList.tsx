@@ -74,7 +74,7 @@ const HistoryList = () => {
             <ErrorBoundary>
               <JobHistoryItem
                 {...job}
-                className="bg-white py-1 px-2 grow border border-l-gray-800"
+                className="bg-white py-1 px-2 grow border border-l-gray-800 space-y-2"
                 key={id}
                 onCompanyNameChange={(newName) =>
                   companyChangehandler(id, newName)

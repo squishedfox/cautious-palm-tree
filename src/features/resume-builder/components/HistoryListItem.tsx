@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
-import { ChevronIcon, EditableField, TrashIcon, XmarkIcon } from "@app/components";
+import { ChevronIcon, CirclePlusIcon, EditableField, TrashIcon, XmarkIcon } from "@app/components";
 
 export interface JobHistoryItemProps {
   companyName: string;
@@ -33,7 +33,7 @@ const JobHistoryItem = ({
 }: JobHistoryItemProps) => {
   // in this portion we use our own client ulid objects so that we can
   // have a sane way of mapping these
-  const [experienceList, setExperienceList] = useState<object>({});
+  const [experienceList, setExperienceList] = useState<Record<string, string>>({});
 
   const onTextAreaChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setExperienceList((prev: object) => ({
@@ -57,6 +57,14 @@ const JobHistoryItem = ({
   const deleteJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     onDelete?.();    
+  }
+
+  const deleteExpereienceHandler = (experienceId: string) => {
+    setExperienceList((prev) => {
+      const copy = Object.assign({}, prev);
+      delete copy[experienceId];
+      return copy;
+    });
   }
 
   return (
@@ -101,9 +109,6 @@ const JobHistoryItem = ({
           </EditableField>
         </p>
       </div>
-      <div>
-        <button onClick={onAddExperienceClick}>Add Experience</button>
-      </div>
       <ul className="space-y-2">
         {Object.entries(experienceList).map(([id, text]) => (
           <li key={id}>
@@ -121,11 +126,18 @@ const JobHistoryItem = ({
                 value={text}
                 onChange={onTextAreaChanged}
                 />
-              <XmarkIcon size="sm" />
+              <button role="button" onClick={() => deleteExpereienceHandler(id)}>
+                <XmarkIcon size="sm" />
+              </button>
             </div>
           </li>
         ))}
       </ul>
+      <div className="border-t border-t-gray-800 pt-2 flex grow justify-end">
+        <button aria-label="add experience" onClick={onAddExperienceClick}>
+          <CirclePlusIcon size="md" />
+        </button>
+      </div>
     </div>
   );
 };
