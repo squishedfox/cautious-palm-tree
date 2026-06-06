@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
-import { ChevronIcon, EditableField } from "@app/components";
+import { ChevronIcon, EditableField, XmarkIcon } from "@app/components";
 
 export interface JobHistoryItemProps {
   companyName: string;
@@ -25,10 +25,10 @@ const JobHistoryItem = ({
   // have a sane way of mapping these
   const [experienceList, setExperienceList] = useState<object>({});
 
-  const onTextAreaChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const onTextAreaChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setExperienceList((prev: object) => ({
       ...prev,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [event.target.name]: event.target.value,
     }));
   };
 
@@ -83,23 +83,24 @@ const JobHistoryItem = ({
       <div>
         <button onClick={onAddExperienceClick}>Add Experience</button>
       </div>
-      <ul>
+      <ul className="space-y-2">
         {Object.entries(experienceList).map(([id, text]) => (
           <li key={id}>
-            <div className="flex">
-              <div className="flex-1">
-                <ChevronIcon direction="up" />
-                <ChevronIcon direction="down" />
+            <div className="flex gap-x-1 items-center">
+              <div className="content-start">
+                <ChevronIcon size="sm" direction="up" />
+                <ChevronIcon size="sm" direction="down" />
               </div>
-              <div className="grow">
-                <textarea
-                  id={id}
-                  name={id}
-                  maxLength={250}
-                  value={text}
-                  onChange={onTextAreaChanged}
+              <input
+                type="text"
+                className="flex-1 border-gray-800 border"
+                id={id}
+                name={id}
+                maxLength={250}
+                value={text}
+                onChange={onTextAreaChanged}
                 />
-              </div>
+              <XmarkIcon size="sm" />
             </div>
           </li>
         ))}
