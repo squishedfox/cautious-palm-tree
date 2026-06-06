@@ -12,7 +12,7 @@ const ResumeBuilder = () => {
   const [about, setAbout] = useState<string>("");
 
   return (
-    <form name="job-history" className="gap-1 px-1 pt-4">
+    <form name="job-history" className="gap-1 px-1 pt-4 space-y-2">
       <fieldset className="min-w-full bg-white p-1" aria-description="About Section">
         <h1>About</h1>
         <textarea

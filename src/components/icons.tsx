@@ -7,6 +7,7 @@ import Save from "@assets/save.svg";
 import Export from "@assets/export.svg";
 import Pdf from "@assets/export.svg";
 import Xmark from "@assets/xmark.svg";
+import Plus from "@assets/plus.svg";
 import type { AriaAttributes, HTMLAttributes } from "react";
 
 const iconClassSizeMap = {
@@ -49,3 +50,4 @@ export const SaveIcon = ({size = "md"}: IconProps) => (<img src={Save} className
 export const ExportIcon = ({size = "md"}: IconProps) => (<img src={Export} className={iconClassSizeMap[size]} />);
 export const PdfIcon = ({size = "md"}: IconProps) => (<img src={Pdf} className={iconClassSizeMap[size]} />);
 export const XmarkIcon = ({size = "md"}: IconProps) => (<img src={Xmark} className={iconClassSizeMap[size]} />);
+export const PlusIcon = ({size = "md"}: IconProps) => (<img src={Plus} className={iconClassSizeMap[size]} />);

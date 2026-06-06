@@ -2,7 +2,7 @@ import { useState, type MouseEvent } from "react";
 import type { JobHistoryListItem } from "../types";
 import JobHistoryItem from "./HistoryListItem";
 import { ulid } from "ulid";
-import { TrashIcon, ChevronIcon } from "@app/components/icons";
+import { TrashIcon, ChevronIcon, PlusIcon } from "@app/components/icons";
 import { ErrorBoundary } from "@/components";
 
 const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
@@ -58,16 +58,18 @@ const HistoryList = () => {
   };
 
   return (
-    <div>
-      <div className="w-full">
-        <button onClick={addJobHandler}>Add Job</button>
+    <div className="space-y-2">
+      <div className="flex grow justify-end">
+        <button onClick={addJobHandler}>
+          <PlusIcon />
+        </button>
       </div>
       <ul className="space-y-4">
         {Object.entries(jobs).map(([id, job]) => (
           <li key={id} className="flex items-start gap-x-1">
             <div>
-              <ChevronIcon direction="up" />
-              <ChevronIcon direction="down" />
+              <ChevronIcon size="sm" direction="up" />
+              <ChevronIcon size="sm" direction="down" />
             </div>
             <ErrorBoundary>
               <JobHistoryItem
