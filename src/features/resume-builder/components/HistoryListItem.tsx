@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
-import { ChevronIcon, EditableField, XmarkIcon } from "@app/components";
+import { ChevronIcon, EditableField, TrashIcon, XmarkIcon } from "@app/components";
 
 export interface JobHistoryItemProps {
   companyName: string;
@@ -12,14 +12,24 @@ export interface JobHistoryItemProps {
    * @param [string, string] range - first element is start second element is end. If the end is undefined or empty the user cleared it out
    */
   onDateChange?: (range: [string, string | undefined]) => void;
+  /**
+   * Callback for when user deletes entire job history
+   */
+  onDelete?: () => void;
+  /**
+   * Any additional classes to apply to the container element
+   */
+  className?: string;
 }
 
 const JobHistoryItem = ({
+  className,
   companyName: companyNameProp,
   startDate,
   endDate,
   onCompanyNameChange,
   onDateChange,
+  onDelete,
 }: JobHistoryItemProps) => {
   // in this portion we use our own client ulid objects so that we can
   // have a sane way of mapping these
@@ -44,20 +54,31 @@ const JobHistoryItem = ({
     onDateChange?.([start, end]); 
   };
 
+  const deleteJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    onDelete?.();    
+  }
+
   return (
-    <div className="bg-white p-1">
+    <div className={className}>
       <div role="group">
-        <p>
-          <EditableField
-            value={companyNameProp}
-            type="text"
-            onChanged={(companyName) =>
-              onCompanyNameChange?.(companyName as string)
-            }
-          >
-            <strong>{companyNameProp}</strong>
-          </EditableField>
-        </p>
+      <div className="flex place-content-between grow">
+        <EditableField
+          value={companyNameProp}
+          type="text"
+          onChanged={(companyName) =>
+            onCompanyNameChange?.(companyName as string)
+          }
+        >
+          <strong>{companyNameProp}</strong>
+        </EditableField>
+        <button
+          title={`delete "${companyNameProp}" and all related details`}
+          aria-label="Delete job"
+          onClick={deleteJobHandler}>
+          <TrashIcon size="sm" />
+        </button>
+      </div>
         <p className="flex gap-x-1">
           <EditableField
             value={startDate}

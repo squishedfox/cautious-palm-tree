@@ -25,18 +25,13 @@ const HistoryList = () => {
     );
   };
 
-  const deleteJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setIsDeleting(true);
-    const [idToDelete]: Array<string> = event.currentTarget.id.split("-");
-
+  const deleteJobHandler = (idToDelete: string) => {
     setJobs((prev) => {
       // faster than props spread
       const newValue = Object.assign({}, prev);
       delete newValue[idToDelete];
       return newValue;
     });
-    setIsDeleting(false);
   };
 
   const companyChangehandler = (id: string, newName: string) => {
@@ -67,35 +62,25 @@ const HistoryList = () => {
       <div className="w-full">
         <button onClick={addJobHandler}>Add Job</button>
       </div>
-      <ul title="Job History" className="space-y-4">
+      <ul className="space-y-4">
         {Object.entries(jobs).map(([id, job]) => (
-          <li key={id}>
-            <div className="flex place-content-between">
-              <div className="inline-flex">
-                <ChevronIcon direction="up" />
-                <ChevronIcon direction="down" />
-              </div>
-              <div>
-                <button
-                  disabled={isDeleting}
-                  aria-label="Delete job"
-                  id={`${id}-delete-btn`}
-                  onClick={deleteJobHandler}
-                >
-                  <TrashIcon />
-                </button>
-              </div>
+          <li key={id} className="flex items-start gap-x-1">
+            <div>
+              <ChevronIcon direction="up" />
+              <ChevronIcon direction="down" />
             </div>
             <ErrorBoundary>
               <JobHistoryItem
-                key={id}
                 {...job}
+                className="bg-white py-1 px-2 grow boder border-l-gray-800"
+                key={id}
                 onCompanyNameChange={(newName) =>
                   companyChangehandler(id, newName)
                 }
                 onDateChange={(newDateRange) =>
                   dateChangeHandler(id, newDateRange)
                 }
+                onDelete={() => deleteJobHandler(id)}
               />
             </ErrorBoundary>
           </li>
