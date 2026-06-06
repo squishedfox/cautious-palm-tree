@@ -3,6 +3,7 @@ import type { JobHistoryListItem } from "../types";
 import JobHistoryItem from "./HistoryListItem";
 import { ulid } from "ulid";
 import { TrashIcon, ChevronIcon } from "@app/components/icons";
+import { ErrorBoundary } from "@/components";
 
 const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
   companyName: "Company Name Here",
@@ -18,12 +19,9 @@ const HistoryList = () => {
   const addJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setJobs((prev) =>
-      Object.assign(
-        {
-          [ulid()]: createEmptyJobHistoryItem(),
-        },
-        prev,
-      ),
+      Object.assign({}, prev, {
+        [ulid()]: createEmptyJobHistoryItem(),
+      }),
     );
   };
 
@@ -32,42 +30,36 @@ const HistoryList = () => {
     setIsDeleting(true);
     const [idToDelete]: Array<string> = event.currentTarget.id.split("-");
 
-    setJobs((prev) =>
-      Object.entries(prev).reduce(
-        (acc, [id, job]) => {
-          if (id !== idToDelete) {
-            acc[id] = job;
-          }
-          return acc;
-        },
-        {} as Record<string, JobHistoryListItem>,
-      ),
-    );
+    setJobs((prev) => {
+      // faster than props spread
+      const newValue = Object.assign({}, prev);
+      delete newValue[idToDelete];
+      return newValue;
+    });
     setIsDeleting(false);
   };
 
   const companyChangehandler = (id: string, newName: string) => {
-    setJobs((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        companyName: newName,
-      },
-    }));
+    setJobs((prev) => {
+      // faster than props spread
+      const newValue = Object.assign({}, prev)
+      newValue[id] = Object.assign({}, prev[id], { companyName: newName })
+      return newValue; 
+    });
   };
 
   const dateChangeHandler = (
     id: string,
     range: [string, string | undefined],
   ) => {
-    setJobs((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
+    setJobs((prev) => {
+      const newValue = Object.assign({}, prev)
+      newValue[id] = Object.assign({}, prev[id], { 
         startDate: range[0],
-        endDate: range[1],
-      },
-    }));
+        endDate: range[1] 
+      })
+      return newValue;
+    });
   };
 
   return (
@@ -94,16 +86,18 @@ const HistoryList = () => {
                 </button>
               </div>
             </div>
-            <JobHistoryItem
-              key={id}
-              {...job}
-              onCompanyNameChange={(newName) =>
-                companyChangehandler(id, newName)
-              }
-              onDateChange={(newDateRange) =>
-                dateChangeHandler(id, newDateRange)
-              }
-            />
+            <ErrorBoundary>
+              <JobHistoryItem
+                key={id}
+                {...job}
+                onCompanyNameChange={(newName) =>
+                  companyChangehandler(id, newName)
+                }
+                onDateChange={(newDateRange) =>
+                  dateChangeHandler(id, newDateRange)
+                }
+              />
+            </ErrorBoundary>
           </li>
         ))}
       </ul>

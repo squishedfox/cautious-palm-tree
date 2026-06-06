@@ -32,7 +32,8 @@ const JobHistoryItem = ({
     }));
   };
 
-  const onAddExperienceClick = (_: MouseEvent<HTMLButtonElement>) => {
+  const onAddExperienceClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setExperienceList((prev) => ({
       ...prev,
       [ulid()]: "",
