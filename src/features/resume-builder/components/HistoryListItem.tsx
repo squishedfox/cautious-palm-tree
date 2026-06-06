@@ -133,7 +133,7 @@ const JobHistoryItem = ({
           </li>
         ))}
       </ul>
-      <div className="border-t border-t-gray-800 pt-2 flex grow justify-end">
+      <div className="border-t border-t-gray-800 pt-1 flex grow justify-end">
         <button aria-label="add experience" onClick={onAddExperienceClick}>
           <CirclePlusIcon size="md" />
         </button>
