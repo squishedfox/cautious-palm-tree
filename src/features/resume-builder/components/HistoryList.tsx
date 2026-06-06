@@ -1,9 +1,9 @@
 import { useState, type MouseEvent } from "react";
-import type { JobHistoryListItem } from "../types";
 import JobHistoryItem from "./HistoryListItem";
 import { ulid } from "ulid";
-import { TrashIcon, ChevronIcon, PlusIcon } from "@app/components/icons";
-import { ErrorBoundary } from "@/components";
+import { ChevronIcon, PlusIcon } from "@app/components/icons";
+import { ErrorBoundary } from "@app/components";
+import type { JobHistoryListItem } from "@app/types";
 
 const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
   companyName: "Company Name Here",

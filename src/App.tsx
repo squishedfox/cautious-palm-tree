@@ -1,4 +1,4 @@
-import { ResumeBuilder } from "@app/features";
+import { ResumeBuilder, Preview } from "@app/features";
 import {SaveIcon, ExportIcon} from "@app/components/icons";
 
 const App = () => (
@@ -8,7 +8,7 @@ const App = () => (
         <ResumeBuilder />
       </div>
       <div className="w-1/2 p-4">
-        <h1>Preview Goes Here</h1>
+        <Preview about={""} jobs={[]} />
       </div>
     </div>
     <footer className="flex flex-row border border-gray-800 grow-0 justify-end items-center pr-4 py-4 gap-4">

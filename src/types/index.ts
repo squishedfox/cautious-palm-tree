@@ -17,6 +17,10 @@ export interface JobHistoryListItem {
    * Whether the job is currently your job
    */
   isCurrent: boolean;
+  /**
+   * List of exerpience you have in your job
+   */
+  experience: string[];
 }
 
 export interface JobHistoryList {

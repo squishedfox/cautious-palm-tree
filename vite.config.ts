@@ -27,6 +27,7 @@ export default defineConfig(({ command }) => {
         '@assets': path.join(__dirname, 'src/assets'),
         '@components': path.join(__dirname, 'src/components'),
         '@features': path.join(__dirname, 'src/features'),
+        '@types': path.join(__dirname, 'src/types'),
       },
     },
     plugins: [

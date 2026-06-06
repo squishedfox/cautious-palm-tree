@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
-import { ChevronIcon, CirclePlusIcon, EditableField, SquarePlusIcon, TrashIcon, XmarkIcon } from "@app/components";
+import { ChevronIcon, EditableField, SquarePlusIcon, TrashIcon, XmarkIcon } from "@app/components";
 
 export interface JobHistoryItemProps {
   companyName: string;

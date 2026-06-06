@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "electron-updater": "^6.8.3",
+    "marked": "^18.0.5",
     "ulid": "^3.0.2"
   },
   "devDependencies": {

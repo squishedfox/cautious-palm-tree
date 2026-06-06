@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { JobHistoryListItem } from "./types";
+import type { JobHistoryListItem } from "@app/types";
 import { HistoryList } from "./components";
 
 export interface ResumeBuilderForm {
