@@ -7,7 +7,7 @@ import Save from "@assets/save.svg";
 import Export from "@assets/export.svg";
 import Pdf from "@assets/export.svg";
 import Xmark from "@assets/xmark.svg";
-import type { AriaAttributes } from "react";
+import type { AriaAttributes, HTMLAttributes } from "react";
 
 const iconClassSizeMap = {
   "xs": "w-2 h-2",
@@ -16,7 +16,7 @@ const iconClassSizeMap = {
   "lg": "w-16 h-16",
   "xl": "w-32 h-32",
 }
-export interface IconProps extends AriaAttributes {
+export interface IconProps extends AriaAttributes, Omit<HTMLAttributes<HTMLElement>, "src"|"alt"> {
   size?: "xs"|"sm"|"md"|"lg"|"xl"
 }
 export interface ChevronIconProps extends IconProps {
@@ -29,16 +29,16 @@ export interface ChevronIconProps extends IconProps {
 /**
  * Single Chevron Icon
  */
-export const ChevronIcon = ({ direction, size = "md", ...ariaProps }: ChevronIconProps) => {
+export const ChevronIcon = ({ direction, size = "md", ...restHtmlProps }: ChevronIconProps) => {
   switch (direction) {
     case "down":
-      return <img {...ariaProps} src={ChevronDown} className={iconClassSizeMap[size]} alt="chevron down" />;
+      return <img {...restHtmlProps} src={ChevronDown} className={iconClassSizeMap[size]} alt="chevron down" />;
     case "up":
-      return <img {...ariaProps}  src={ChevronUp} className={iconClassSizeMap[size]} alt="chevron up" />;
+      return <img {...restHtmlProps}  src={ChevronUp} className={iconClassSizeMap[size]} alt="chevron up" />;
     case "left":
-      return <img {...ariaProps} src={ChevronLeft} className={iconClassSizeMap[size]} alt="chevron left" />;
+      return <img {...restHtmlProps} src={ChevronLeft} className={iconClassSizeMap[size]} alt="chevron left" />;
     case "right":
-      return <img {...ariaProps} src={ChevronRight} className={iconClassSizeMap[size]} alt="chevron right" />;
+      return <img {...restHtmlProps} src={ChevronRight} className={iconClassSizeMap[size]} alt="chevron right" />;
     default:
       return null; // you done goofed
   }
