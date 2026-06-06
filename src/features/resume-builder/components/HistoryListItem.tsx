@@ -1,21 +1,19 @@
-import { useState, type ChangeEvent, type MouseEvent } from "react";
+import { use, useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
-import { ChevronIcon, EditableField, SquarePlusIcon, TrashIcon, XmarkIcon } from "@app/components";
+import {
+  ChevronIcon,
+  EditableField,
+  SquarePlusIcon,
+  TrashIcon,
+  XmarkIcon,
+} from "@app/components";
+import { useResumseBuilderForm } from "../context";
 
 export interface JobHistoryItemProps {
+  id: string;
   companyName: string;
   startDate: string;
   endDate?: string;
-  onCompanyNameChange?: (newValue: string) => void;
-  /**
-   * Callback for when the start date or end date change.
-   * @param [string, string] range - first element is start second element is end. If the end is undefined or empty the user cleared it out
-   */
-  onDateChange?: (range: [string, string | undefined]) => void;
-  /**
-   * Callback for when user deletes entire job history
-   */
-  onDelete?: () => void;
   /**
    * Any additional classes to apply to the container element
    */
@@ -23,14 +21,15 @@ export interface JobHistoryItemProps {
 }
 
 const JobHistoryItem = ({
+  id,
   className,
   companyName: companyNameProp,
   startDate,
   endDate,
-  onCompanyNameChange,
-  onDateChange,
-  onDelete,
 }: JobHistoryItemProps) => {
+  const { dateChanged, removeJob, companyNameChanged } =
+    useResumseBuilderForm();
+
   // in this portion we use our own client ulid objects so that we can
   // have a sane way of mapping these
   const [experienceList, setExperienceList] = useState<Record<string, string>>({
@@ -54,13 +53,13 @@ const JobHistoryItem = ({
   };
 
   const handleDateChanged = ([start, end]: [string, string]) => {
-    onDateChange?.([start, end]); 
+    dateChanged(id, [start, end]);
   };
 
   const deleteJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    onDelete?.();    
-  }
+    removeJob(id);
+  };
 
   const deleteExpereienceHandler = (experienceId: string) => {
     setExperienceList((prev) => {
@@ -68,17 +67,21 @@ const JobHistoryItem = ({
       delete copy[experienceId];
       return copy;
     });
-  }
+  };
+
+  const onCompanyNameChange = (newCompanyName: string) => {
+    companyNameChanged(id, newCompanyName);
+  };
 
   return (
     <div className={className}>
       <div>
-        <div className="flex place-content-between grow">
+        <div className="flex grow place-content-between">
           <EditableField
             value={companyNameProp}
             type="text"
             onChanged={(companyName) =>
-              onCompanyNameChange?.(companyName as string)
+              onCompanyNameChange(companyName as string)
             }
           >
             <strong>{companyNameProp}</strong>
@@ -86,7 +89,8 @@ const JobHistoryItem = ({
           <button
             title={`delete "${companyNameProp}" and all related details`}
             aria-label="Delete job"
-            onClick={deleteJobHandler}>
+            onClick={deleteJobHandler}
+          >
             <TrashIcon size="sm" />
           </button>
         </div>
@@ -115,7 +119,7 @@ const JobHistoryItem = ({
       <ul className="space-y-2">
         {Object.entries(experienceList).map(([id, text]) => (
           <li key={id}>
-            <div className="flex gap-x-1 items-center">
+            <div className="flex items-center gap-x-1">
               <div className="content-start">
                 <ChevronIcon size="sm" direction="up" />
                 <ChevronIcon size="sm" direction="down" />
@@ -123,14 +127,18 @@ const JobHistoryItem = ({
               <input
                 placeholder="Implemented data driven features using analytical tools such as amplitude, clarity, google analtyics, etc."
                 type="text"
-                className="flex-1 border-gray-800 border px-1 py-0.5"
+                className="flex-1 border border-gray-800 px-1 py-0.5"
                 id={id}
                 name={id}
                 maxLength={250}
                 value={text}
                 onChange={onTextAreaChanged}
-                />
-              <button title="delete experience" role="button" onClick={() => deleteExpereienceHandler(id)}>
+              />
+              <button
+                title="delete experience"
+                role="button"
+                onClick={() => deleteExpereienceHandler(id)}
+              >
                 <XmarkIcon size="sm" />
               </button>
             </div>
@@ -139,7 +147,11 @@ const JobHistoryItem = ({
       </ul>
       <div className="flex grow items-center">
         <hr className="flex-1" />
-        <button aria-label="add experience" onClick={onAddExperienceClick} className="grow-0">
+        <button
+          aria-label="add experience"
+          onClick={onAddExperienceClick}
+          className="grow-0"
+        >
           <SquarePlusIcon size="md" />
         </button>
       </div>
