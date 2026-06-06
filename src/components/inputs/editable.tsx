@@ -44,7 +44,7 @@ export interface EditableFieldProps {
    * Callback for when user has changed the value from what was
    * originally passed in.
    */
-  onChanged: (value: string | number | Date | undefined) => void;
+  onChanged: (value: string | number) => void;
 }
 
 const EditableField = ({
@@ -133,7 +133,7 @@ const EditableField = ({
     <input
       ref={ref}
       type={type}
-      value={value}
+      value={value ?? ""}
       onChange={handleFieldValueChanged}
       onKeyUp={handleKeyUp}
       onBlur={handleBlur}

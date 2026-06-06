@@ -39,14 +39,8 @@ const JobHistoryItem = ({
     }));
   };
 
-  const handleDateChanged = ([start, end]: [string, string | undefined]) => {
-    const startFormatted = new Date(start).toLocaleDateString();
-    let endFormatted: string|undefined = undefined;
-    if (end) {
-      endFormatted = new Date(end).toLocaleDateString(); 
-    }
-
-    onDateChange?.([startFormatted, endFormatted]); 
+  const handleDateChanged = ([start, end]: [string, string]) => {
+    onDateChange?.([start, end]); 
   };
 
   return (
@@ -68,7 +62,7 @@ const JobHistoryItem = ({
             value={startDate}
             type="date"
             onChanged={(newDate) =>
-              handleDateChanged([newDate as string, endDate])
+              handleDateChanged([newDate as string, endDate as string])
             }
           >
             <span>{startDate}</span>
@@ -78,10 +72,10 @@ const JobHistoryItem = ({
             value={endDate}
             type="date"
             onChanged={(newEndDate) =>
-              handleDateChanged([startDate, newEndDate as string | undefined])
+              handleDateChanged([startDate, newEndDate as string])
             }
           >
-            <span>{Boolean(endDate) ? endDate : "Current"}</span>
+            <span>{endDate ? endDate : "Current"}</span>
           </EditableField>
         </p>
       </div>
@@ -104,9 +98,6 @@ const JobHistoryItem = ({
                   value={text}
                   onChange={onTextAreaChanged}
                 />
-                <p>
-                  <em>{250 - (text as string).length}</em>
-                </p>
               </div>
             </div>
           </li>
