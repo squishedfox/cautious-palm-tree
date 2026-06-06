@@ -7,6 +7,7 @@ import Save from "@assets/save.svg";
 import Export from "@assets/export.svg";
 import Pdf from "@assets/export.svg";
 import Xmark from "@assets/xmark.svg";
+import type { AriaAttributes } from "react";
 
 const iconClassSizeMap = {
   "xs": "w-2 h-2",
@@ -15,7 +16,7 @@ const iconClassSizeMap = {
   "lg": "w-16 h-16",
   "xl": "w-32 h-32",
 }
-export interface IconProps {
+export interface IconProps extends AriaAttributes {
   size?: "xs"|"sm"|"md"|"lg"|"xl"
 }
 export interface ChevronIconProps extends IconProps {
