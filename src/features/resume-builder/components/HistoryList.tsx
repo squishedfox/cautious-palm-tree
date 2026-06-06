@@ -12,7 +12,7 @@ const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
 });
 
 const HistoryList = () => {
-  const [jobs, setJobs] = useState<object>({});
+  const [jobs, setJobs] = useState<Record<string, JobHistoryListItem>>({});
   const [isDeleting, setIsDeleting] = useState(false);
 
   const addJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
@@ -33,14 +33,27 @@ const HistoryList = () => {
     const [idToDelete]: Array<string> = event.currentTarget.id.split("-");
 
     setJobs((prev) =>
-      Object.entries(prev).reduce((acc, [id, job]) => {
-        if (id !== idToDelete) {
-          acc[id] = job;
-        }
-        return acc;
-      }, {} as any),
+      Object.entries(prev).reduce(
+        (acc, [id, job]) => {
+          if (id !== idToDelete) {
+            acc[id] = job;
+          }
+          return acc;
+        },
+        {} as Record<string, JobHistoryListItem>,
+      ),
     );
     setIsDeleting(false);
+  };
+
+  const companyChangehandler = (id: string, newName: string) => {
+    setJobs((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        companyName: newName,
+      },
+    }));
   };
 
   return (
@@ -67,7 +80,13 @@ const HistoryList = () => {
                 </button>
               </div>
             </div>
-            <JobHistoryItem key={job.companyName} {...job} />
+            <JobHistoryItem
+              key={id}
+              {...job}
+              onCompanyNameChange={(newName) =>
+                companyChangehandler(id, newName)
+              }
+            />
           </li>
         ))}
       </ul>
