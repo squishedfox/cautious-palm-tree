@@ -67,14 +67,14 @@ const HistoryList = () => {
       <ul className="space-y-4">
         {Object.entries(jobs).map(([id, job]) => (
           <li key={id} className="flex items-start gap-x-1">
-            <div>
+            <div className="pt-1">
               <ChevronIcon size="sm" direction="up" />
               <ChevronIcon size="sm" direction="down" />
             </div>
             <ErrorBoundary>
               <JobHistoryItem
                 {...job}
-                className="bg-white py-1 px-2 grow boder border-l-gray-800"
+                className="bg-white py-1 px-2 grow border border-l-gray-800"
                 key={id}
                 onCompanyNameChange={(newName) =>
                   companyChangehandler(id, newName)
