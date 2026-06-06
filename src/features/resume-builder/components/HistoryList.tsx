@@ -56,6 +56,20 @@ const HistoryList = () => {
     }));
   };
 
+  const dateChangeHandler = (
+    id: string,
+    range: [string, string | undefined],
+  ) => {
+    setJobs((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        startDate: range[0],
+        endDate: range[1],
+      },
+    }));
+  };
+
   return (
     <div>
       <div className="w-full">
@@ -85,6 +99,9 @@ const HistoryList = () => {
               {...job}
               onCompanyNameChange={(newName) =>
                 companyChangehandler(id, newName)
+              }
+              onDateChange={(newDateRange) =>
+                dateChangeHandler(id, newDateRange)
               }
             />
           </li>

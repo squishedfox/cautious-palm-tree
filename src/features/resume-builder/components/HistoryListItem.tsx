@@ -39,7 +39,15 @@ const JobHistoryItem = ({
     }));
   };
 
-  const handleDateChanged = (newrange: [string, string | undefined]) => void {};
+  const handleDateChanged = ([start, end]: [string, string | undefined]) => {
+    const startFormatted = new Date(start).toLocaleDateString();
+    let endFormatted: string|undefined = undefined;
+    if (end) {
+      endFormatted = new Date(end).toLocaleDateString(); 
+    }
+
+    onDateChange?.([startFormatted, endFormatted]); 
+  };
 
   return (
     <div className="bg-white p-1">
