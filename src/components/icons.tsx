@@ -29,17 +29,16 @@ export interface ChevronIconProps extends IconProps {
 /**
  * Single Chevron Icon
  */
-export const ChevronIcon = ({ direction, size = "md" }: ChevronIconProps) => {
-  // TODO: eventually need to support size differences
+export const ChevronIcon = ({ direction, size = "md", ...ariaProps }: ChevronIconProps) => {
   switch (direction) {
     case "down":
-      return <img src={ChevronDown} className={iconClassSizeMap[size]} alt="chevron down" />;
+      return <img {...ariaProps} src={ChevronDown} className={iconClassSizeMap[size]} alt="chevron down" />;
     case "up":
-      return <img src={ChevronUp} className={iconClassSizeMap[size]} alt="chevron up" />;
+      return <img {...ariaProps}  src={ChevronUp} className={iconClassSizeMap[size]} alt="chevron up" />;
     case "left":
-      return <img src={ChevronLeft} className={iconClassSizeMap[size]} alt="chevron left" />;
+      return <img {...ariaProps} src={ChevronLeft} className={iconClassSizeMap[size]} alt="chevron left" />;
     case "right":
-      return <img src={ChevronRight} className={iconClassSizeMap[size]} alt="chevron right" />;
+      return <img {...ariaProps} src={ChevronRight} className={iconClassSizeMap[size]} alt="chevron right" />;
     default:
       return null; // you done goofed
   }
