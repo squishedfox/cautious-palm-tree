@@ -87,7 +87,10 @@ const EditableField = ({
 
   const handleChildClick = () => {
     setIsEditing(true);
-    ref.current?.focus(); // TODO: make this work
+    setTimeout(() => {
+      // add timeout to let the render turn into an input
+      ref.current?.focus();
+    }, 100);
   };
 
   useEffect(() => {

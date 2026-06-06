@@ -17,9 +17,14 @@ const HistoryList = () => {
 
   const addJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setJobs((prev) => Object.assign({
-      [ulid()]: createEmptyJobHistoryItem(),
-    }, prev));
+    setJobs((prev) =>
+      Object.assign(
+        {
+          [ulid()]: createEmptyJobHistoryItem(),
+        },
+        prev,
+      ),
+    );
   };
 
   const deleteJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
@@ -27,14 +32,16 @@ const HistoryList = () => {
     setIsDeleting(true);
     const [idToDelete]: Array<string> = event.currentTarget.id.split("-");
 
-    setJobs((prev) => Object.entries(prev).reduce((acc, [id, job]) => {
-      if (id !== idToDelete) {
-        acc[id] = job;
-      }
-      return acc;
-    }, {} as any));
+    setJobs((prev) =>
+      Object.entries(prev).reduce((acc, [id, job]) => {
+        if (id !== idToDelete) {
+          acc[id] = job;
+        }
+        return acc;
+      }, {} as any),
+    );
     setIsDeleting(false);
-  }
+  };
 
   return (
     <div>
@@ -50,10 +57,17 @@ const HistoryList = () => {
                 <ChevronIcon direction="down" />
               </div>
               <div>
-                <button disabled={isDeleting} aria-label="Delete job" id={`${id}-delete-btn`} onClick={deleteJobHandler}><TrashIcon /></button>
+                <button
+                  disabled={isDeleting}
+                  aria-label="Delete job"
+                  id={`${id}-delete-btn`}
+                  onClick={deleteJobHandler}
+                >
+                  <TrashIcon />
+                </button>
               </div>
             </div>
-            <JobHistoryItem {...job} />
+            <JobHistoryItem key={job.companyName} {...job} />
           </li>
         ))}
       </ul>
