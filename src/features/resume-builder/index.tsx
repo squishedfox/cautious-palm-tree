@@ -12,7 +12,7 @@ const ResumeBuilder = () => {
 
   return (
     <form name="job-history-form" className="space-y-2">
-      <fieldset className="min-w-full bg-white px-2 py-1 border border-gray-800" aria-labelledby="about-section-heading">
+      <fieldset className="min-w-full bg-white p-2 border border-gray-800" aria-labelledby="about-section-heading">
         <h1 id="about-section-heading">About</h1>
         <textarea
           placeholder="1+ years of delivering data driven fatures for well tested applications using <frameworks>"

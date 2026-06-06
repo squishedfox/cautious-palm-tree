@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { ulid } from "ulid";
-import { ChevronIcon, CirclePlusIcon, EditableField, TrashIcon, XmarkIcon } from "@app/components";
+import { ChevronIcon, CirclePlusIcon, EditableField, SquarePlusIcon, TrashIcon, XmarkIcon } from "@app/components";
 
 export interface JobHistoryItemProps {
   companyName: string;
@@ -72,24 +72,24 @@ const JobHistoryItem = ({
 
   return (
     <div className={className}>
-      <div role="group">
-      <div className="flex place-content-between grow">
-        <EditableField
-          value={companyNameProp}
-          type="text"
-          onChanged={(companyName) =>
-            onCompanyNameChange?.(companyName as string)
-          }
-        >
-          <strong>{companyNameProp}</strong>
-        </EditableField>
-        <button
-          title={`delete "${companyNameProp}" and all related details`}
-          aria-label="Delete job"
-          onClick={deleteJobHandler}>
-          <TrashIcon size="sm" />
-        </button>
-      </div>
+      <div>
+        <div className="flex place-content-between grow">
+          <EditableField
+            value={companyNameProp}
+            type="text"
+            onChanged={(companyName) =>
+              onCompanyNameChange?.(companyName as string)
+            }
+          >
+            <strong>{companyNameProp}</strong>
+          </EditableField>
+          <button
+            title={`delete "${companyNameProp}" and all related details`}
+            aria-label="Delete job"
+            onClick={deleteJobHandler}>
+            <TrashIcon size="sm" />
+          </button>
+        </div>
         <p className="flex gap-x-1">
           <EditableField
             value={startDate}
@@ -140,7 +140,7 @@ const JobHistoryItem = ({
       <div className="flex grow items-center">
         <hr className="flex-1" />
         <button aria-label="add experience" onClick={onAddExperienceClick} className="grow-0">
-          <CirclePlusIcon size="md" />
+          <SquarePlusIcon size="md" />
         </button>
       </div>
     </div>
