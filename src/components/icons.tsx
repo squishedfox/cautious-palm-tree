@@ -15,8 +15,8 @@ const iconClassSizeMap = {
   "xs": "w-2 h-2",
   "sm": "w-4 h-4",
   "md": "w-8 h-8",
-  "lg": "w-16 h-16",
-  "xl": "w-32 h-32",
+  "lg": "w-10 h-10",
+  "xl": "w-16 h-16",
 }
 export interface IconProps extends AriaAttributes, Omit<HTMLAttributes<HTMLElement>, "src"|"alt"> {
   size?: "xs"|"sm"|"md"|"lg"|"xl"

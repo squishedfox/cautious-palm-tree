@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { JobHistoryListItem } from "./types";
 import { HistoryList } from "./components";
-import { SaveIcon } from "@/components/icons";
 
 export interface ResumeBuilderForm {
   about: string;
@@ -31,9 +30,6 @@ const ResumeBuilder = () => {
       <fieldset>
         <HistoryList /> 
       </fieldset>
-      <div role="group" className="flex justify-end gap-1">
-        <button aria-label="Save" role="button"><SaveIcon /></button>
-      </div>
     </form>
   );
 };
