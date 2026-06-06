@@ -27,14 +27,8 @@ const JobHistoryItem = ({
   startDate,
   endDate,
 }: JobHistoryItemProps) => {
-  const { dateChanged, removeJob, companyNameChanged } =
+  const { dateChanged, removeJob, companyNameChanged, addExperience } =
     useResumseBuilderForm();
-
-  // in this portion we use our own client ulid objects so that we can
-  // have a sane way of mapping these
-  const [experienceList, setExperienceList] = useState<Record<string, string>>({
-    [ulid()]: "",
-  });
 
   const onTextAreaChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setExperienceList((prev: object) => ({
@@ -45,11 +39,7 @@ const JobHistoryItem = ({
 
   const onAddExperienceClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setExperienceList((prev) => {
-      const copy = Object.assign({}, prev);
-      copy[ulid()] = "";
-      return copy;
-    });
+    addExperience(id);
   };
 
   const handleDateChanged = ([start, end]: [string, string]) => {
@@ -61,13 +51,7 @@ const JobHistoryItem = ({
     removeJob(id);
   };
 
-  const deleteExpereienceHandler = (experienceId: string) => {
-    setExperienceList((prev) => {
-      const copy = Object.assign({}, prev);
-      delete copy[experienceId];
-      return copy;
-    });
-  };
+  const deleteExperienceHandler = (experienceId: string) => {};
 
   const onCompanyNameChange = (newCompanyName: string) => {
     companyNameChanged(id, newCompanyName);
@@ -137,7 +121,7 @@ const JobHistoryItem = ({
               <button
                 title="delete experience"
                 role="button"
-                onClick={() => deleteExpereienceHandler(id)}
+                onClick={() => deleteExperienceHandler(id)}
               >
                 <XmarkIcon size="sm" />
               </button>

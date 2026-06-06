@@ -33,6 +33,15 @@ const ResumeBuilderContext = createContext({
     !!newName;
     /* left intentially blank */
   },
+  addExperience: (jobId: string) => {
+    !!jobId;
+    /* left intentially blank */
+  },
+  removeExperience: (jobId: string, experienceId: string) => {
+    !!jobId;
+    !!experienceId;
+    /* left intentially blank */
+  },
 });
 
 export interface ResumeBuilderFormProviderProps {
@@ -84,6 +93,28 @@ export const ResumeBuilderFormProvider = ({
     });
   };
 
+  const addExperience = (jobId: string) => {
+    setJobs((prev) => {
+      // faster than props spread
+      const newValue = Object.assign({}, prev);
+      newValue[jobId] = Object.assign({}, prev[jobId], {
+        experiences: {
+          [ulid()]: "",
+        },
+      });
+      return newValue;
+    });
+  };
+
+  const removeExperience = (jobId: string, experienceId: string) => {
+    setJobs((prev) => {
+      // faster than props spread
+      const newValue = Object.assign({}, prev);
+      delete newValue[jobId].experience[experienceId];
+      return newValue;
+    });
+  };
+
   return (
     <ResumeBuilderContext.Provider
       value={{
@@ -94,6 +125,8 @@ export const ResumeBuilderFormProvider = ({
         removeJob,
         dateChanged,
         companyNameChanged,
+        addExperience,
+        removeExperience,
       }}
     >
       {children}
@@ -102,6 +135,15 @@ export const ResumeBuilderFormProvider = ({
 };
 
 export const useResumseBuilderForm = () => useContext(ResumeBuilderContext);
-function uild() {
-  throw new Error("Function not implemented.");
-}
+export const useJob = (id: string) => {
+  const { jobs, removeJob: removeJob } = useResumseBuilderForm();
+
+  const removeCurrentJob = () => {
+    removeJob(id);
+  };
+
+  return {
+    job: jobs[id],
+    removeCurrentJob,
+  };
+};
