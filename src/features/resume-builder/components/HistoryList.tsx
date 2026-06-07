@@ -1,61 +1,15 @@
-import { useState, type MouseEvent } from "react";
+import { type MouseEvent } from "react";
 import JobHistoryItem from "./HistoryListItem";
-import { ulid } from "ulid";
 import { ChevronIcon, PlusIcon } from "@app/components/icons";
 import { ErrorBoundary } from "@app/components";
-import type { JobHistoryListItem } from "@app/types";
-
-const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
-  companyName: "Company Name Here",
-  startDate: new Date().toLocaleDateString(),
-  endDate: "",
-  isCurrent: true,
-});
+import { useResumseBuilderForm } from "../context";
 
 const HistoryList = () => {
-  const [jobs, setJobs] = useState<Record<string, JobHistoryListItem>>({
-    [ulid()]: createEmptyJobHistoryItem(),
-  });
+  const { jobs, addJob } = useResumseBuilderForm();
 
   const addJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setJobs((prev) =>
-      Object.assign({}, prev, {
-        [ulid()]: createEmptyJobHistoryItem(),
-      }),
-    );
-  };
-
-  const deleteJobHandler = (idToDelete: string) => {
-    setJobs((prev) => {
-      // faster than props spread
-      const newValue = Object.assign({}, prev);
-      delete newValue[idToDelete];
-      return newValue;
-    });
-  };
-
-  const companyChangehandler = (id: string, newName: string) => {
-    setJobs((prev) => {
-      // faster than props spread
-      const newValue = Object.assign({}, prev)
-      newValue[id] = Object.assign({}, prev[id], { companyName: newName })
-      return newValue; 
-    });
-  };
-
-  const dateChangeHandler = (
-    id: string,
-    range: [string, string | undefined],
-  ) => {
-    setJobs((prev) => {
-      const newValue = Object.assign({}, prev)
-      newValue[id] = Object.assign({}, prev[id], { 
-        startDate: range[0],
-        endDate: range[1] 
-      })
-      return newValue;
-    });
+    addJob();
   };
 
   return (
@@ -76,15 +30,9 @@ const HistoryList = () => {
             <ErrorBoundary>
               <JobHistoryItem
                 {...job}
-                className="bg-white py-2 px-2 grow border border-l-gray-800 space-y-2"
+                className="grow space-y-2 border border-l-gray-800 bg-white px-2 py-2"
                 key={id}
-                onCompanyNameChange={(newName) =>
-                  companyChangehandler(id, newName)
-                }
-                onDateChange={(newDateRange) =>
-                  dateChangeHandler(id, newDateRange)
-                }
-                onDelete={() => deleteJobHandler(id)}
+                id={id}
               />
             </ErrorBoundary>
           </li>

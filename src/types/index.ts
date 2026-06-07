@@ -20,7 +20,7 @@ export interface JobHistoryListItem {
   /**
    * List of exerpience you have in your job
    */
-  experience: string[];
+  experience: Record<string, string>;
 }
 
 export interface JobHistoryList {
