@@ -9,10 +9,7 @@ import {
 import { useJob } from "../context";
 
 export interface JobHistoryItemProps {
-  id: string;
-  companyName: string;
-  startDate: string;
-  endDate?: string;
+  jobId: string;
   /**
    * Any additional classes to apply to the container element
    */
@@ -20,14 +17,11 @@ export interface JobHistoryItemProps {
 }
 
 const JobHistoryItem = ({
-  id,
+  jobId: id,
   className,
-  companyName: companyNameProp,
-  startDate,
-  endDate,
 }: JobHistoryItemProps) => {
   const { 
-    job: {experience},
+    job,
     dateChanged,
     removeJob,
     companyNameChanged,
@@ -57,16 +51,16 @@ const JobHistoryItem = ({
       <div>
         <div className="flex grow place-content-between">
           <EditableField
-            value={companyNameProp}
+            value={job.companyName}
             type="text"
             onChanged={(companyName) =>
               companyNameChangeHandler(companyName as string)
             }
           >
-            <strong>{companyNameProp}</strong>
+            <strong>{job.companyName}</strong>
           </EditableField>
           <button
-            title={`delete "${companyNameProp}" and all related details`}
+            title={`delete "${job.companyName}" and all related details`}
             aria-label="Delete job"
             onClick={deleteJobHandler}
           >
@@ -75,28 +69,28 @@ const JobHistoryItem = ({
         </div>
         <p className="flex gap-x-1">
           <EditableField
-            value={startDate}
+            value={job.startDate}
             type="date"
             onChanged={(newDate) =>
-              employmentDateChangedHandler([newDate as string, endDate as string])
+              employmentDateChangedHandler([newDate as string, job.endDate as string])
             }
           >
-            <span>{startDate}</span>
+            <span>{job.startDate}</span>
           </EditableField>
           <span>-</span>
           <EditableField
-            value={endDate}
+            value={job.endDate}
             type="date"
             onChanged={(newEndDate) =>
-              employmentDateChangedHandler([startDate, newEndDate as string])
+              employmentDateChangedHandler([job.startDate, newEndDate as string])
             }
           >
-            <span>{endDate ? endDate : "Current"}</span>
+            <span>{job.endDate ? job.endDate : "Current"}</span>
           </EditableField>
         </p>
       </div>
       <ul className="space-y-2">
-        {Object.entries(experience).map(([id, text]) => (
+        {Object.entries(job.experience).map(([id, text]) => (
           <li key={id}>
             <div className="flex items-center gap-x-1">
               <div className="content-start">

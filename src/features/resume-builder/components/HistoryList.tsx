@@ -21,7 +21,7 @@ const HistoryList = () => {
         </button>
       </div>
       <ul className="space-y-4">
-        {Object.entries(jobs).map(([id, job]) => (
+        {Object.keys(jobs).map((id) => (
           <li key={id} className="flex items-start gap-x-1">
             <div className="pt-1">
               <ChevronIcon size="sm" direction="up" />
@@ -29,10 +29,9 @@ const HistoryList = () => {
             </div>
             <ErrorBoundary>
               <JobHistoryItem
-                {...job}
                 className="grow space-y-2 border border-l-gray-800 bg-white px-2 py-2"
                 key={id}
-                id={id}
+                jobId={id}
               />
             </ErrorBoundary>
           </li>
