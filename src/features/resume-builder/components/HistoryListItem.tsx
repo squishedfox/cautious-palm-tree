@@ -1,5 +1,4 @@
-import { use, useState, type ChangeEvent, type MouseEvent } from "react";
-import { ulid } from "ulid";
+import { type ChangeEvent, type MouseEvent } from "react";
 import {
   ChevronIcon,
   EditableField,
@@ -7,7 +6,7 @@ import {
   TrashIcon,
   XmarkIcon,
 } from "@app/components";
-import { useResumseBuilderForm } from "../context";
+import { useJob } from "../context";
 
 export interface JobHistoryItemProps {
   id: string;
@@ -27,35 +26,31 @@ const JobHistoryItem = ({
   startDate,
   endDate,
 }: JobHistoryItemProps) => {
-  const { dateChanged, removeJob, companyNameChanged, addExperience } =
-    useResumseBuilderForm();
+  const { 
+    job: {experience},
+    dateChanged,
+    removeJob,
+    companyNameChanged,
+    addExperience,
+    updateExperience,
+    removeExperience
+  } = useJob(id);
 
-  const onTextAreaChanged = (event: ChangeEvent<HTMLInputElement>) => {
-    setExperienceList((prev: object) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-  };
 
   const onAddExperienceClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    addExperience(id);
-  };
-
-  const handleDateChanged = ([start, end]: [string, string]) => {
-    dateChanged(id, [start, end]);
+    addExperience();
   };
 
   const deleteJobHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    removeJob(id);
+    removeJob();
   };
 
-  const deleteExperienceHandler = (experienceId: string) => {};
-
-  const onCompanyNameChange = (newCompanyName: string) => {
-    companyNameChanged(id, newCompanyName);
-  };
+  const experienceChangedHandler = (event: ChangeEvent<HTMLInputElement>) => updateExperience(event.target.name, event.target.value) 
+  const employmentDateChangedHandler = ([start, end]: [string, string]) => dateChanged([start, end]);
+  const removeExperienceHandler = (experienceId: string) => removeExperience(experienceId); 
+  const companyNameChangeHandler = (newCompanyName: string) => companyNameChanged(newCompanyName);
 
   return (
     <div className={className}>
@@ -65,7 +60,7 @@ const JobHistoryItem = ({
             value={companyNameProp}
             type="text"
             onChanged={(companyName) =>
-              onCompanyNameChange(companyName as string)
+              companyNameChangeHandler(companyName as string)
             }
           >
             <strong>{companyNameProp}</strong>
@@ -83,7 +78,7 @@ const JobHistoryItem = ({
             value={startDate}
             type="date"
             onChanged={(newDate) =>
-              handleDateChanged([newDate as string, endDate as string])
+              employmentDateChangedHandler([newDate as string, endDate as string])
             }
           >
             <span>{startDate}</span>
@@ -93,7 +88,7 @@ const JobHistoryItem = ({
             value={endDate}
             type="date"
             onChanged={(newEndDate) =>
-              handleDateChanged([startDate, newEndDate as string])
+              employmentDateChangedHandler([startDate, newEndDate as string])
             }
           >
             <span>{endDate ? endDate : "Current"}</span>
@@ -101,7 +96,7 @@ const JobHistoryItem = ({
         </p>
       </div>
       <ul className="space-y-2">
-        {Object.entries(experienceList).map(([id, text]) => (
+        {Object.entries(experience).map(([id, text]) => (
           <li key={id}>
             <div className="flex items-center gap-x-1">
               <div className="content-start">
@@ -116,12 +111,12 @@ const JobHistoryItem = ({
                 name={id}
                 maxLength={250}
                 value={text}
-                onChange={onTextAreaChanged}
+                onChange={experienceChangedHandler}
               />
               <button
                 title="delete experience"
                 role="button"
-                onClick={() => deleteExperienceHandler(id)}
+                onClick={() => removeExperienceHandler(id)}
               >
                 <XmarkIcon size="sm" />
               </button>
