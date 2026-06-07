@@ -64,6 +64,7 @@ export const ResumeBuilderFormProvider = ({
   });
 
   const addJob = () => {
+    console.debug("Adding Job");
     setJobs((prev) => {
       const copy = Object.assign({}, prev);
       copy[ulid()] = createEmptyJobHistoryItem();
@@ -72,6 +73,7 @@ export const ResumeBuilderFormProvider = ({
   };
 
   const removeJob = (id: string) => {
+    console.debug("Removing Job: [", id, "]");
     setJobs((prev) => {
       const copy = Object.assign({}, prev);
       delete copy[id];
@@ -80,6 +82,7 @@ export const ResumeBuilderFormProvider = ({
   };
 
   const dateChanged = (id: string, range: DateRange) => {
+    console.debug("Date changed for Job: [", id, "] new range", range);
     setJobs((prev) => {
       const newValue = Object.assign({}, prev);
       newValue[id] = Object.assign({}, prev[id], {
@@ -91,6 +94,7 @@ export const ResumeBuilderFormProvider = ({
   };
 
   const companyNameChanged = (id: string, newName: string) => {
+    console.debug("Company name changed for Job: [", id, "] new name", newName);
     setJobs((prev) => {
       // faster than props spread
       const newValue = Object.assign({}, prev);
@@ -100,33 +104,35 @@ export const ResumeBuilderFormProvider = ({
   };
 
   const addExperience = (jobId: string) => {
+    console.debug("Adding experience for Job: [", jobId, "]");
     setJobs((prev) => {
       // faster than props spread
-      const { experience: prevExperience } = prev[jobId];
-      console.log("before", prevExperience);
-      const copy = Object.assign({}, prev);
-      copy[jobId].experience = Object.assign({}, prevExperience);
-      copy[jobId].experience[ulid()] = "";
+      const copy = Object.assign({}, prev, {
+        [jobId]: Object.assign({}, prev[jobId], {
+          experience: Object.assign({}, prev[jobId].experience, {
+            [ulid()]: "",
+          }),
+        }),
+      });
 
-      console.log("after", copy[jobId].experience);
       return copy;
     });
   };
 
   const updateExperience = (jobId: string, experienceId: string, newValue: string) => {
-    setJobs((prev) => {
-      // faster than props spread
-      const newJobValue = Object.assign({}, prev);
-      newJobValue[jobId] = Object.assign({}, prev[jobId], {
-        experiences: Object.assign({}, prev[jobId].experience, {
+
+    console.debug("Upating experience for Job: [", jobId, "]");
+    setJobs((prev) => Object.assign({}, prev, {
+      [jobId]: Object.assign({}, prev[jobId], {
+        experience: Object.assign({}, prev[jobId].experience, {
           [experienceId]: newValue,
         }),
-      });
-      return newJobValue;
-    });
+      }),
+    }));
   }
 
   const removeExperience = (jobId: string, experienceId: string) => {
+    console.debug("Removing experience for Job: [", jobId, "]");
     setJobs((prev) => {
       // faster than props spread
       const newValue = Object.assign({}, prev);
