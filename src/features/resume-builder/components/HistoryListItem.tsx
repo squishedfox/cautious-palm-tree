@@ -6,7 +6,7 @@ import {
   TrashIcon,
   XmarkIcon,
 } from "@app/components";
-import { useJob } from "../context";
+import { useJob } from "@app/features/resume-builder/state";
 
 export interface JobHistoryItemProps {
   jobId: string;

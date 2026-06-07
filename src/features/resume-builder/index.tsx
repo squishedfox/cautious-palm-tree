@@ -1,10 +1,6 @@
-import { useState, type ChangeEvent } from "react";
-import { type JobHistoryListItem } from "@app/types";
-import { About, HistoryList } from "./components";
-import { createEmptyJobHistoryItem } from "./utils";
-import { ulid } from "ulid";
-import type { ResumeBuilderFormValue } from "./types";
-import { ResumeBuilderFormProvider } from "./context";
+import { About, HistoryList } from "@app/features/resume-builder/components";
+import type { ResumeBuilderFormValue } from "@app/features/resume-builder/types";
+import { ResumeBuilderFormProvider } from "@app/features/resume-builder/state/context";
 
 export interface ResumeBuilderFormProps {
   onChange: (formValue: ResumeBuilderFormValue) => void;

@@ -2,7 +2,7 @@ import { type MouseEvent } from "react";
 import JobHistoryItem from "./HistoryListItem";
 import { ChevronIcon, PlusIcon } from "@app/components/icons";
 import { ErrorBoundary } from "@app/components";
-import { useResumseBuilderForm } from "../context";
+import { useResumseBuilderForm } from "@app/features/resume-builder/state";
 
 const HistoryList = () => {
   const { jobs, addJob } = useResumseBuilderForm();

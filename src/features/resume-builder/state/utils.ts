@@ -5,5 +5,5 @@ export const createEmptyJobHistoryItem = (): JobHistoryListItem => ({
   startDate: new Date().toLocaleDateString(),
   endDate: "",
   isCurrent: true,
-  experience: [],
+  experience: {} as Record<string, string>,
 });

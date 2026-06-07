@@ -1,13 +1,14 @@
-import type { JobHistoryListItem } from "@/types";
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   type PropsWithChildren,
 } from "react";
+import { type JobHistoryListItem } from "@app/types";
 import { createEmptyJobHistoryItem } from "./utils";
 import { ulid } from "ulid";
-import { type DateRange, type ResumeBuilderFormValue } from "./types";
+import { type DateRange, type ResumeBuilderFormValue } from "@app/features/resume-builder/types";
 
 const ResumeBuilderContext = createContext({
   about: "",
@@ -120,7 +121,6 @@ export const ResumeBuilderFormProvider = ({
   };
 
   const updateExperience = (jobId: string, experienceId: string, newValue: string) => {
-
     console.debug("Upating experience for Job: [", jobId, "]");
     setJobs((prev) => Object.assign({}, prev, {
       [jobId]: Object.assign({}, prev[jobId], {
@@ -140,6 +140,10 @@ export const ResumeBuilderFormProvider = ({
       return newValue;
     });
   };
+
+  useEffect(() => {
+
+  }, []);
 
   return (
     <ResumeBuilderContext.Provider
