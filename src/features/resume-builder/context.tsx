@@ -1,15 +1,16 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useReducer,
-  useState,
   type PropsWithChildren,
-} from "react";./state/utils
+} from "react";
 import { type JobHistoryListItem } from "@app/types";
-import { createEmptyJobHistoryItem } from "./utils";
-import { ulid } from "ulid";
-import { type DateRange, type ResumeBuilderFormValue } from "@app/features/resume-builder/types";
+import {
+  type DateRange,
+  type ResumeBuilderFormValue,
+} from "@app/features/resume-builder/types";
+import { initialState, type ResumeBuilderState } from "./state";
+import type { ResumeBuilderActionType } from "./actions";
 import { resumeBuilderReducer } from "./reducers";
 
 const ResumeBuilderContext = createContext({
@@ -50,7 +51,7 @@ const ResumeBuilderContext = createContext({
     !!experienceId;
     !!newValue;
     /* left intentially blank */
-  }
+  },
 });
 
 export interface ResumeBuilderFormProviderProps {
@@ -61,32 +62,30 @@ export const ResumeBuilderFormProvider = ({
   onChange,
   children,
 }: PropsWithChildren<ResumeBuilderFormProviderProps>) => {
-
-  const [state, dispatch] = useReducer(resumeBuilderReducer, initialState)
+  const [state, dispatch] = useReducer<
+    ResumeBuilderState,
+    [ResumeBuilderActionType]
+  >(resumeBuilderReducer, initialState);
 
   const addJob = () => {
-    console.debug("Adding Job");
-    dispatch({ type: "add-job", });
+    dispatch({ type: "add-job" });
   };
 
   const removeJob = (id: string) => {
-    console.debug("Removing Job: [", id, "]");
-    dispatch({ type: "remove-job", payload: { id }});
+    dispatch({ type: "remove-job", payload: { id } });
   };
 
   const dateChanged = (id: string, range: DateRange) => {
-    console.debug("Date changed for Job: [", id, "] new range", range);
     dispatch({
       type: "date-changed-job",
       payload: {
         jobId: id,
         range,
-      }
+      },
     });
   };
 
   const companyNameChanged = (id: string, newName: string) => {
-    console.debug("Company name changed for Job: [", id, "] new name", newName);
     dispatch({
       type: "name-changed-job",
       payload: {
@@ -97,52 +96,46 @@ export const ResumeBuilderFormProvider = ({
   };
 
   const addExperience = (jobId: string) => {
-    console.debug("Adding experience for Job: [", jobId, "]");
-    setJobs((prev) => {
-      // faster than props spread
-      const copy = Object.assign({}, prev, {
-        [jobId]: Object.assign({}, prev[jobId], {
-          experience: Object.assign({}, prev[jobId].experience, {
-            [ulid()]: "",
-          }),
-        }),
-      });
-
-      return copy;
+    dispatch({
+      type: "add-experience",
+      payload: {
+        jobId,
+      },
     });
   };
 
-  const updateExperience = (jobId: string, experienceId: string, newValue: string) => {
-    console.debug("Upating experience for Job: [", jobId, "]");
-    setJobs((prev) => Object.assign({}, prev, {
-      [jobId]: Object.assign({}, prev[jobId], {
-        experience: Object.assign({}, prev[jobId].experience, {
-          [experienceId]: newValue,
-        }),
-      }),
-    }));
-  }
+  const updateExperience = (
+    jobId: string,
+    experienceId: string,
+    newValue: string,
+  ) => {
+    dispatch({
+      type: "update-experience",
+      payload: {
+        expId: experienceId,
+        jobId,
+        newValue,
+      },
+    });
+  };
 
   const removeExperience = (jobId: string, experienceId: string) => {
-    console.debug("Removing experience for Job: [", jobId, "]");
-    setJobs((prev) => {
-      // faster than props spread
-      const newValue = Object.assign({}, prev);
-      delete newValue[jobId].experience[experienceId];
-      return newValue;
+    dispatch({
+      type: "remove-experience",
+      payload: {
+        jobId,
+        expId: experienceId,
+      },
     });
   };
-
-  useEffect(() => {
-
-  }, []);
 
   return (
     <ResumeBuilderContext.Provider
       value={{
-        about,
-        jobs,
-        setAbout,
+        about: state.about,
+        jobs: state.jobs,
+        setAbout: (newAbout) =>
+          dispatch({ type: "about-changed", payload: { newAbout } }),
         addJob,
         removeJob,
         dateChanged,
@@ -167,13 +160,15 @@ export const useJob = (id: string) => {
     removeExperience: removeJobExperience,
     updateExperience: updateJobExperience,
     dateChanged: jobDateChanged,
-    companyNameChanged: jobNameChanged
+    companyNameChanged: jobNameChanged,
   } = useResumseBuilderForm();
 
   const removeJob = () => removeCurrentJob(id);
   const addExperience = () => addJobExperience(id);
-  const removeExperience = (experienceId: string) => removeJobExperience(id, experienceId);
-  const updateExperience = (experienceId: string, newText: string) => updateJobExperience(id, experienceId, newText);
+  const removeExperience = (experienceId: string) =>
+    removeJobExperience(id, experienceId);
+  const updateExperience = (experienceId: string, newText: string) =>
+    updateJobExperience(id, experienceId, newText);
   const dateChanged = (range: DateRange) => jobDateChanged(id, range);
   const companyNameChanged = (newName: string) => jobNameChanged(id, newName);
 

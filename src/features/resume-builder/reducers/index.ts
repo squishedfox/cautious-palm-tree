@@ -1,4 +1,5 @@
 import {
+  isAboutChangedAction,
   isAddExperienceAction,
   isAddJobAction,
   isJobDateChangedAction,
@@ -6,10 +7,10 @@ import {
   isRemoveExperienceAction,
   isRemoveJobAction,
   isUpdateExperienceAction,
-  type AddJobAction,
-  type DispatchJobActionType,
+  type ResumeBuilderActionType,
 } from "../actions";
 import { initialState } from "../state";
+
 import {
   addExperienceReducer,
   removeExperienceReducer,
@@ -22,33 +23,28 @@ import {
   removeJobReducer,
 } from "./jobs";
 
-export type ResumeBuilderAction = AddJobAction;
 export const resumeBuilderReducer = (
   state = initialState,
-  action: DispatchJobActionType,
+  action: ResumeBuilderActionType,
 ) => {
   if (isAddJobAction(action)) {
-    return addJobReducer(state.jobs);
+    return addJobReducer(state);
   } else if (isRemoveJobAction(action)) {
-    return removeJobReducer(state.jobs, action);
+    return removeJobReducer(state, action);
   } else if (isJobDateChangedAction(action)) {
-    return Object.assign(
-      {},
-      state.jobs,
-      jobDateChangedReducer(state.jobs, action),
-    );
+    return jobDateChangedReducer(state, action);
   } else if (isJobNameChangeAction(action)) {
-    return Object.assign(
-      {},
-      state.jobs,
-      jobNameChangedReducer(state.jobs, action),
-    );
+    return jobNameChangedReducer(state, action);
   } else if (isAddExperienceAction(action)) {
     return addExperienceReducer(state, action);
   } else if (isRemoveExperienceAction(action)) {
     return removeExperienceReducer(state, action);
   } else if (isUpdateExperienceAction(action)) {
     return updateExperienceReducer(state, action);
+  } else if (isAboutChangedAction(action)) {
+    return Object.assign({}, state, {
+      about: action.payload.newAbout,
+    });
   } else {
     return state;
   }

@@ -1,4 +1,4 @@
-import { useResumseBuilderForm } from "@app/features/resume-builder/state";
+import { useResumseBuilderForm } from "../context";
 
 const About = () => {
   const { about, setAbout } = useResumseBuilderForm();

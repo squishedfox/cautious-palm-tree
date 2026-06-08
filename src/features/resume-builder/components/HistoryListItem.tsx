@@ -6,7 +6,7 @@ import {
   TrashIcon,
   XmarkIcon,
 } from "@app/components";
-import { useJob } from "@app/features/resume-builder/state";
+import { useJob } from "../context";
 
 export interface JobHistoryItemProps {
   jobId: string;
@@ -16,20 +16,16 @@ export interface JobHistoryItemProps {
   className?: string;
 }
 
-const JobHistoryItem = ({
-  jobId: id,
-  className,
-}: JobHistoryItemProps) => {
-  const { 
+const JobHistoryItem = ({ jobId: id, className }: JobHistoryItemProps) => {
+  const {
     job,
     dateChanged,
     removeJob,
     companyNameChanged,
     addExperience,
     updateExperience,
-    removeExperience
+    removeExperience,
   } = useJob(id);
-
 
   const onAddExperienceClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -41,10 +37,14 @@ const JobHistoryItem = ({
     removeJob();
   };
 
-  const experienceChangedHandler = (event: ChangeEvent<HTMLInputElement>) => updateExperience(event.target.name, event.target.value) 
-  const employmentDateChangedHandler = ([start, end]: [string, string]) => dateChanged([start, end]);
-  const removeExperienceHandler = (experienceId: string) => removeExperience(experienceId); 
-  const companyNameChangeHandler = (newCompanyName: string) => companyNameChanged(newCompanyName);
+  const experienceChangedHandler = (event: ChangeEvent<HTMLInputElement>) =>
+    updateExperience(event.target.name, event.target.value);
+  const employmentDateChangedHandler = ([start, end]: [string, string]) =>
+    dateChanged([start, end]);
+  const removeExperienceHandler = (experienceId: string) =>
+    removeExperience(experienceId);
+  const companyNameChangeHandler = (newCompanyName: string) =>
+    companyNameChanged(newCompanyName);
 
   return (
     <div className={className}>
@@ -72,7 +72,10 @@ const JobHistoryItem = ({
             value={job.startDate}
             type="date"
             onChanged={(newDate) =>
-              employmentDateChangedHandler([newDate as string, job.endDate as string])
+              employmentDateChangedHandler([
+                newDate as string,
+                job.endDate as string,
+              ])
             }
           >
             <span>{job.startDate}</span>
@@ -82,7 +85,10 @@ const JobHistoryItem = ({
             value={job.endDate}
             type="date"
             onChanged={(newEndDate) =>
-              employmentDateChangedHandler([job.startDate, newEndDate as string])
+              employmentDateChangedHandler([
+                job.startDate,
+                newEndDate as string,
+              ])
             }
           >
             <span>{job.endDate ? job.endDate : "Current"}</span>

@@ -3,17 +3,17 @@ export type ExperienceActionName =
   | "remove-experience"
   | "update-experience";
 
-export interface ExperienceAction {
+export interface ExperienceActionType {
   type: ExperienceActionName;
 }
-export interface AddExperienceAction extends ExperienceAction {
+export interface AddExperienceAction extends ExperienceActionType {
   type: "add-experience";
   payload: {
     jobId: string;
   };
 }
 
-export interface RemoveExperienceAction extends ExperienceAction {
+export interface RemoveExperienceAction extends ExperienceActionType {
   type: "remove-experience";
   payload: {
     jobId: string;
@@ -21,7 +21,7 @@ export interface RemoveExperienceAction extends ExperienceAction {
   };
 }
 
-export interface UpdateExperienceAction extends ExperienceAction {
+export interface UpdateExperienceAction extends ExperienceActionType {
   type: "update-experience";
   payload: {
     jobId: string;
