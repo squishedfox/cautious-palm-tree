@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useReducer,
   useState,
   type PropsWithChildren,
 } from "react";
@@ -9,6 +10,7 @@ import { type JobHistoryListItem } from "@app/types";
 import { createEmptyJobHistoryItem } from "./utils";
 import { ulid } from "ulid";
 import { type DateRange, type ResumeBuilderFormValue } from "@app/features/resume-builder/types";
+import { resumeBuilderReducer } from "./reducers";
 
 const ResumeBuilderContext = createContext({
   about: "",
@@ -59,6 +61,8 @@ export const ResumeBuilderFormProvider = ({
   onChange,
   children,
 }: PropsWithChildren<ResumeBuilderFormProviderProps>) => {
+
+  const [state, dispatch] = useReducer(resumeBuilderReducer, initialState)
   const [about, setAbout] = useState<string>("");
   const [jobs, setJobs] = useState<Record<string, JobHistoryListItem>>({
     [ulid()]: createEmptyJobHistoryItem(),
@@ -66,41 +70,33 @@ export const ResumeBuilderFormProvider = ({
 
   const addJob = () => {
     console.debug("Adding Job");
-    setJobs((prev) => {
-      const copy = Object.assign({}, prev);
-      copy[ulid()] = createEmptyJobHistoryItem();
-      return copy;
-    });
+    dispatch({ type: "add-job", }); 
   };
 
   const removeJob = (id: string) => {
     console.debug("Removing Job: [", id, "]");
-    setJobs((prev) => {
-      const copy = Object.assign({}, prev);
-      delete copy[id];
-      return copy;
-    });
+    dispatch({ type: "remove-job", payload: { id }});
   };
 
   const dateChanged = (id: string, range: DateRange) => {
     console.debug("Date changed for Job: [", id, "] new range", range);
-    setJobs((prev) => {
-      const newValue = Object.assign({}, prev);
-      newValue[id] = Object.assign({}, prev[id], {
-        startDate: range[0],
-        endDate: range?.[1] || "",
-      });
-      return newValue;
+    dispatch({ 
+      type: "date-changed-job",
+      payload: {
+        jobId: id,
+        range,
+      }
     });
   };
 
   const companyNameChanged = (id: string, newName: string) => {
     console.debug("Company name changed for Job: [", id, "] new name", newName);
-    setJobs((prev) => {
-      // faster than props spread
-      const newValue = Object.assign({}, prev);
-      newValue[id] = Object.assign({}, prev[id], { companyName: newName });
-      return newValue;
+    dispatch({
+      type: "name-changed-job",
+      payload: {
+        jobId: id,
+        newName,
+      },
     });
   };
 
