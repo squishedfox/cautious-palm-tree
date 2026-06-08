@@ -5,7 +5,7 @@ import {
   useReducer,
   useState,
   type PropsWithChildren,
-} from "react";
+} from "react";./state/utils
 import { type JobHistoryListItem } from "@app/types";
 import { createEmptyJobHistoryItem } from "./utils";
 import { ulid } from "ulid";
@@ -63,14 +63,10 @@ export const ResumeBuilderFormProvider = ({
 }: PropsWithChildren<ResumeBuilderFormProviderProps>) => {
 
   const [state, dispatch] = useReducer(resumeBuilderReducer, initialState)
-  const [about, setAbout] = useState<string>("");
-  const [jobs, setJobs] = useState<Record<string, JobHistoryListItem>>({
-    [ulid()]: createEmptyJobHistoryItem(),
-  });
 
   const addJob = () => {
     console.debug("Adding Job");
-    dispatch({ type: "add-job", }); 
+    dispatch({ type: "add-job", });
   };
 
   const removeJob = (id: string) => {
@@ -80,7 +76,7 @@ export const ResumeBuilderFormProvider = ({
 
   const dateChanged = (id: string, range: DateRange) => {
     console.debug("Date changed for Job: [", id, "] new range", range);
-    dispatch({ 
+    dispatch({
       type: "date-changed-job",
       payload: {
         jobId: id,
@@ -164,7 +160,7 @@ export const ResumeBuilderFormProvider = ({
 export const useResumseBuilderForm = () => useContext(ResumeBuilderContext);
 
 export const useJob = (id: string) => {
-  const { 
+  const {
     jobs,
     removeJob: removeCurrentJob,
     addExperience: addJobExperience,
@@ -175,12 +171,12 @@ export const useJob = (id: string) => {
   } = useResumseBuilderForm();
 
   const removeJob = () => removeCurrentJob(id);
-  const addExperience = () => addJobExperience(id); 
+  const addExperience = () => addJobExperience(id);
   const removeExperience = (experienceId: string) => removeJobExperience(id, experienceId);
   const updateExperience = (experienceId: string, newText: string) => updateJobExperience(id, experienceId, newText);
-  const dateChanged = (range: DateRange) => jobDateChanged(id, range); 
+  const dateChanged = (range: DateRange) => jobDateChanged(id, range);
   const companyNameChanged = (newName: string) => jobNameChanged(id, newName);
-  
+
   return {
     job: jobs[id],
     removeJob,

@@ -1,6 +1,6 @@
 import { About, HistoryList } from "@app/features/resume-builder/components";
 import type { ResumeBuilderFormValue } from "@app/features/resume-builder/types";
-import { ResumeBuilderFormProvider } from "@app/features/resume-builder/state/context";
+import { ResumeBuilderFormProvider } from "@/features/resume-builder/context";
 
 export interface ResumeBuilderFormProps {
   onChange: (formValue: ResumeBuilderFormValue) => void;
