@@ -10,21 +10,29 @@ export interface PreviewProps {
 
 const Preview = ({ about, jobs }: PreviewProps) => {
   return (
-    <div className="flex w-full grow">
+    <div>
       <p>{about}</p>
-      {jobs.map(({ companyName, endDate, startDate, experience }) => (
-        <div className="space-y-1" role="row">
-          <h3>{companyName}</h3>
-          <p className="justify-between">
-            {startDate}-{endDate ? endDate : "Current"}
-          </p>
-          <ul>
-            {experience.map((exp, ix) => (
-              <li key={ix}>{exp}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <ul>
+        {jobs.map(({ companyName, endDate, startDate, experience }, ix) => (
+          <li className="min-w-full">
+            <div className="flex flex-col">
+              <div className="flex content-between items-center gap-1">
+                <h2>{companyName}</h2>
+                <hr className="grow" />
+                <div className="inline-flex">
+                  <span>{startDate}</span> -{" "}
+                  <span>{endDate ? endDate : "Current"}</span>
+                </div>
+              </div>
+              <ul className="list-disc">
+                {experience.map((exp, j) => (
+                  <li key={j}>{exp}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
