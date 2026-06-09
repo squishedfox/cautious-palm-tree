@@ -1,8 +1,11 @@
-import type { JobHistoryListItem } from "@app/types";
-
 export interface ResumeBuilderFormValue {
   about: string;
-  jobHistory: JobHistoryListItem[];
+  jobHistory: {
+    companyName: string;
+    endDate?: string;
+    startDate: string;
+    experience: string[];
+  }[];
 }
 
 export type DateRange = [string, string | undefined];

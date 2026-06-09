@@ -1,6 +1,8 @@
 import {
   createContext,
+  use,
   useContext,
+  useEffect,
   useReducer,
   type PropsWithChildren,
 } from "react";
@@ -12,6 +14,7 @@ import {
 import { initialState, type ResumeBuilderState } from "./state";
 import type { ResumeBuilderActionType } from "./actions";
 import { resumeBuilderReducer } from "./reducers";
+import { usePrevous } from "@/hooks";
 
 const ResumeBuilderContext = createContext({
   about: "",
@@ -66,6 +69,8 @@ export const ResumeBuilderFormProvider = ({
     ResumeBuilderState,
     [ResumeBuilderActionType]
   >(resumeBuilderReducer, initialState);
+
+  const prevState = usePrevous(state);
 
   const addJob = () => {
     dispatch({ type: "add-job" });
@@ -128,6 +133,18 @@ export const ResumeBuilderFormProvider = ({
       },
     });
   };
+
+  useEffect(() => {
+    onChange({
+      about: state.about,
+      jobHistory: Object.values(state.jobs).map((job) => ({
+        endDate: job.endDate,
+        experience: Object.values(job.experience),
+        startDate: job.startDate,
+        companyName: job.companyName,
+      })),
+    });
+  }, [state]);
 
   return (
     <ResumeBuilderContext.Provider
